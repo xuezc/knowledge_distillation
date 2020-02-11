@@ -5,6 +5,7 @@
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image1.png)
     在该方法中，首先，学习一个预定义的词汇表的教师深层特征（称之为视觉教师词汇）,具体操作是先定义一个视觉词嵌入的词汇表V，并取最后一个隐层的特征图f_T，以此使用平方欧几里得距离来计算特征图和视觉词的距离d
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image2.png)    
+
     接着使用计算出来的距离计算软分配向量P_T，如下式所示，其中tau表示温度系数，用以控制分配的软化度
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image3.png)
     然后，使用分配预测器由学生网络来预测向量P_S，其中分配预测器是由一个基于余弦相似度的卷积层组成的，计算公式如下式，其中，W表示卷积层的参数，
