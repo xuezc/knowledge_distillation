@@ -13,6 +13,7 @@
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image4.png)
 
     最后就可以计算向量P_T和P_S的KL散度
+
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image5.png)
 
     这样的蒸馏策略旨在通过预先计算好的教师词典进行预测，以使学生网络行为与教师网络行为相一致，而不是使用特征预测。这种方法的优势在于，它只对教师在培训过程中学习到的主要视觉概念/单词进行编码，而对教师特征的扰动不敏感。
