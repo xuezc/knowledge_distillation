@@ -1,7 +1,7 @@
 # knowledge_distillation
 
-##一．从类概率蒸馏
-###1.	QUEST: Quantized embedding space for transferring knowledge(CVPR 2020)：代替在教师网络的初始特征空间进行蒸馏操作，文章先将原始特征空间转化为一个对特征扰动更为鲁棒的量化空间再进行蒸馏。在该量化空间中，更关注重要的语义概念及其在知识蒸馏中的空间相关性。具体的网络结构图如下图所示
+## 一．从类概率蒸馏
+### 1.	QUEST: Quantized embedding space for transferring knowledge(CVPR 2020)：代替在教师网络的初始特征空间进行蒸馏操作，文章先将原始特征空间转化为一个对特征扰动更为鲁棒的量化空间再进行蒸馏。在该量化空间中，更关注重要的语义概念及其在知识蒸馏中的空间相关性。具体的网络结构图如下图所示
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image1.png)
     &emsp;&emsp;在该方法中，首先，学习一个预定义的词汇表的教师深层特征（称之为视觉教师词汇）,具体操作是先定义一个视觉词嵌入的词汇表V，并取最后一个隐层的特征图f_T，以此使用平方欧几里得距离来计算特征图和视觉词的距离d
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/image2.png)    
