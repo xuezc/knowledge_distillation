@@ -111,4 +111,5 @@
 其中，E为期望算子，D是一个具有五个卷积的全卷积神经网络，作为嵌入网络，在GAN中作为判别器，将Q和I一同映射为整体嵌入分值。
     &emsp;&emsp;最后，总的损失函数为
     ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image36.png)
+
 其中，l_mc为传统的多类交叉熵损失。
