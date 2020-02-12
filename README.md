@@ -112,5 +112,4 @@
     &emsp;&emsp;最后，总的损失函数为
 
     ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image36.png)
-
 其中，l_mc为传统的多类交叉熵损失。
