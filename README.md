@@ -60,14 +60,11 @@
     
     &emsp;&emsp;在网络中，每个网络以单向循环的方式将其知识传输到下一个对等网络。如果一起训练K个网络，每个网络将其知识提取到下一个网络，除了最后一个网络将其知识转移到第一个网络之外，创建一个循环的知识转移流为1>2,2>3 ,…,(K-1)>K,K>1。使用这种循环学习框架的主要好处是避免使用过多的鉴别器。如果对每一对网络应用提出的对抗损失，它将需要两倍于每一对可能的K网络的数量，这将需要大量的计算。经验表明，对于多个网络，循环训练方案优于其他在线方法的训练方案。
 2.	Knowledge Squeezed Adversarial Network Compression(AAAI 2020)：受网络规模差距过大，小网络无法完美模拟大网络的假设启发，文章提出了一种在对抗性训练框架下学习学生网络的知识转移方法，包括有效的中间监督。为了实现功能强大和高度紧凑的中间信息表示，压缩的知识通过任务驱动的注意机制来实现。这样，教师网络的知识转移就可以适应学生网络的规模。结果表明，该方法综合了面向过程学习和面向结果学习的优点。
-    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image17.png)  
-    
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image17.png)      
     &emsp;&emsp;文章提出的KSANC方法的结构图如上图所示，网络主要分为两个部分：主干网络子网络和注意机制子网络。其中注意机制子网络的注意估计器的结构如下图所示
-    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image18.png)  
-    
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image18.png)      
     &emsp;&emsp;其作用是产生压缩知识描述子，进而通过压缩知识描述子来计算中间层的损失。计算压缩知识描述子需要中间层的特征图和全局描述子即softmax的输入向量，具体的计算公式如下
-    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image19.png)  
-    
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image19.png)      
 其中，W是一个卷积核，用来得到注意力得分M。
     &emsp;&emsp;对于损失函数，网络的整体损失函数由三部分组成：对抗损失L_adv，主干损失L_b和中间层损失L_is:
     ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image20.png)  
