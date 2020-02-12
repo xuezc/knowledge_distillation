@@ -60,5 +60,51 @@
     
     &emsp;&emsp;在网络中，每个网络以单向循环的方式将其知识传输到下一个对等网络。如果一起训练K个网络，每个网络将其知识提取到下一个网络，除了最后一个网络将其知识转移到第一个网络之外，创建一个循环的知识转移流为1>2,2>3 ,…,(K-1)>K,K>1。使用这种循环学习框架的主要好处是避免使用过多的鉴别器。如果对每一对网络应用提出的对抗损失，它将需要两倍于每一对可能的K网络的数量，这将需要大量的计算。经验表明，对于多个网络，循环训练方案优于其他在线方法的训练方案。
 2.	Knowledge Squeezed Adversarial Network Compression(AAAI 2020)：受网络规模差距过大，小网络无法完美模拟大网络的假设启发，文章提出了一种在对抗性训练框架下学习学生网络的知识转移方法，包括有效的中间监督。为了实现功能强大和高度紧凑的中间信息表示，压缩的知识通过任务驱动的注意机制来实现。这样，教师网络的知识转移就可以适应学生网络的规模。结果表明，该方法综合了面向过程学习和面向结果学习的优点。
-3.	Knowledge Distillation from Internal Representations(AAAI 2020)：文章指出了当教师规模相当大时，并不能保证教师的知识会转移到学生身上；即使学生与软标签紧密匹配，其内部表现也可能大不相同。这种内部的不匹配可能会破坏最初从教师转移到学生身上的泛化能力。文中除了使用kl散度之外，使用了余弦相似度损失用以转移中间层的暗知识。
-4.	Structured Knowledge Distillation for Dense Prediction：文章将结构信息从大型网络传输到小型网络来进行密集预测任务，文章具体研究了两种结构化的蒸馏方案，一是通过建立静态图来提取成对相似度的成对蒸馏，另一个是使用对抗训练来提取整体知识的整体蒸馏。并通过对语义分割、深度估计和目标检测这三个密集预测任务的大量实验，来证明提出方法的有效性。
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image17.png)
+    &emsp;&emsp;文章提出的KSANC方法的结构图如上图所示，网络主要分为两个部分：主干网络子网络和注意机制子网络。其中注意机制子网络的注意估计器的结构如下图所示
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image18.png)
+    &emsp;&emsp;其作用是产生压缩知识描述子，进而通过压缩知识描述子来计算中间层的损失。计算压缩知识描述子需要中间层的特征图和全局描述子即softmax的输入向量，具体的计算公式如下
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image19.png)
+其中，W是一个卷积核，用来得到注意力得分M。
+    &emsp;&emsp;对于损失函数，网络的整体损失函数由三部分组成：对抗损失L_adv，主干损失L_b和中间层损失L_is:
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image20.png)
+    &emsp;&emsp;主干损失通过最小化教师和学生网络主干的logit的L2损失，即
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image21.png)
+    &emsp;&emsp;对抗损失由三部分组成，在网络实现中使用了GAN网络
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image22.png)
+    &emsp;&emsp;在式中第一项为由判别器来使学生网络和教师网络的logits输出相近，其公式为
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image23.png)
+    &emsp;&emsp;第二项引入正则化和类别级监督，进一步改进了判别器，具体使用了三个正则化来增强学生与鉴别器之间的极大极小对策，如下所示，其中w_D为鉴别器的参数
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image24.png)
+    &emsp;&emsp;第一项只关注在logits分布级别上的匹配，而缺少类别信息，这可能会导致logits和标签之间的不正确关联，第三项进一步修改了鉴别器以同时预测“教师/学生”和类标签，其中l(x)为样本x的标签，C为向量的切片
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image25.png)
+    &emsp;&emsp;中间层损失通过计算压缩知识描述子的L2损失得到，即
+    ![paper5](https://github.com/xuezc/knowledge_distillation/blob/master/image26.png)
+3.	Knowledge Distillation from Internal Representations(AAAI 2020)：文章指出了当教师规模相当大时，并不能保证教师的知识会转移到学生身上；即使学生与软标签紧密匹配，其内部表现也可能大不相同。这种内部的不匹配可能会破坏最初从教师转移到学生身上的泛化能力。文中除了使用KL散度之外，使用了余弦相似度损失用以转移中间层的暗知识。
+    &emsp;&emsp;具体的，文中的损失函数分为两部分：KL散度和余弦相似度损失。其中KL散度的公式为
+    ![paper6](https://github.com/xuezc/knowledge_distillation/blob/master/image27.png)
+    &emsp;&emsp;而余弦相似度损失为
+    ![paper6](https://github.com/xuezc/knowledge_distillation/blob/master/image28.png)
+其中，h为隐层向量表示。
+    &emsp;&emsp;与其他文章不同的是，文中主要针对BERT模型进行蒸馏操作。对于语言模型，教师网络的不同层次会捕捉不同的语言概念。最近的研究表明，当从网络的底部移动到顶部时，BERT构建的语言属性会变得更加复杂。由于模型建立在底层表示的基础上，除了同时提取所有内部层之外，文章考虑了以自底向上的方式逐步提取与内部表示匹配的知识，因此文章提出了一种渐进内蒸馏和一种堆内蒸馏方法。
+    &emsp;&emsp;在渐进内蒸馏法中，先从下层（接近输入）提取知识，然后逐步向上层移动，直到模型只聚焦类别蒸馏。每一次只优化一个层。在下图中，损失的传递方向为1>2>3>4。
+    ![paper6](https://github.com/xuezc/knowledge_distillation/blob/master/image29.png)
+    &emsp;&emsp;在堆内蒸馏方法中，先从较低层提取知识，而不是从一层移到另一层，而是在移到顶层时保留先前层叠加它们所产生的损失。一旦到达顶部，只进行分类，在上图中，损失的传递方式为1>1+2>1+2+3>1+2+3>4。
+4.	Structured Knowledge Distillation for Dense Prediction：文章是在作者以前研究的语义分割的基础上，扩展到了将结构信息从大型网络传输到小型网络来进行密集预测任务，文章具体研究了两种结构化的蒸馏方案，一是通过建立静态图来提取成对相似度的成对蒸馏，目标是将一个静态亲和图对齐，该亲和图计算用于从紧凑网络和复杂网络中捕获不同位置之间的短距离和长距离结构信息。另一个是使用对抗训练来提取整体知识的整体蒸馏，目的是将紧凑型网络和复杂网络所产生的输出结构之间的高阶一致性对齐，具体采用了对抗训练，并采用全卷积网络，也就是说，鉴别器同时考虑输入图像和输出结构以产生一个整体嵌入来代表结构的质量。这样使紧凑网络生成与复杂网络相似的嵌入结构，并将结构质量知识提取到判别器的权值中。
+    &emsp;&emsp;文章通过对语义分割、深度估计和目标检测这三个密集预测任务的大量实验，来证明提出方法的有效性。以语义分割作为实例，具体的网络结构图如下图所示
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image30.png)
+    &emsp;&emsp;由图中的黄色块可以看出，知识蒸馏部分的损失有三部分：逐像素损失(Pixel-wise loss)，逐像素对损失(Pair-wise distillation)和整体损失(Holistic loss)。
+    &emsp;&emsp;对于逐像素损失，文中将分割问题看作是一组独立的像素标记问题，并直接使用知识蒸馏来对齐由紧凑网络产生的每个像素的类概率，由复杂模型产生的类概率作为训练紧致网络的软目标，即为计算logits的KL散度，计算的公式为
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image31.png)
+    &emsp;&emsp;对于逐像素对损失，文中建立了一个静态亲合图来表示空间对关系，其中，节点代表不同的空间位置，两个节点之间的连接代表相似性，并表示每个节点的连接范围alpha和粒度belta来控制静态关联图的大小。对于每个节点，只根据空间距离和空间局部面片中的聚集的belta个像素来考虑与顶部alpha附近节点的相似性，以表示该节点的特征，如下图所示。
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image32.png)
+    &emsp;&emsp;对于一个WHC的特征图，有WH个像素，粒度为belta和连接范围为alpha时，静态亲合图包含了WH/belta个节点和WH/belta*alpha个连接。以a为节点之间的相似性，则逐像素对损失的计算公式为
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image33.png)
+其中，两个节点的相似度a通过聚合的特征计算
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image34.png)
+    &emsp;&emsp;对于整体损失，文章将复杂和紧凑网络产生的分割图之间的高阶关系对齐，计算分割图的整体嵌入作为表示。具体实现采用了条件生成对抗学习，将紧致网络视为基于输入RGB图像I的生成器，将预测的分割图Q^s视为假样本。我们期望Q^s与Q^t尽可能相似，Q^t是教师预测的分割图，被视为真实的样本，则整体损失为
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image35.png)
+其中，E为期望算子，D是一个具有五个卷积的全卷积神经网络，作为嵌入网络，在GAN中作为判别器，将Q和I一同映射为整体嵌入分值。
+    &emsp;&emsp;最后，总的损失函数为
+    ![paper7](https://github.com/xuezc/knowledge_distillation/blob/master/image36.png)
+其中，l_mc为传统的多类交叉熵损失。
