@@ -118,17 +118,24 @@
     
     &emsp;&emsp;文章进一步提出了一种自适应T/S（AT/S）学习方法，以改进基于ground-truth标签的T/S学习。AT/S利用IT/S和CT/S的优势，根据每个标签上的置信度得分，自适应地为教师的软后验概率和每个解码步骤的one-hot ground-truth标签分配一对权重。将置信度作为软标签和one-hot标签的函数进行动态估计。学生AED从两个标签的自适应线性组合中学习。AT/S继承了IT/S中软标签和one-hot标签的线性插值，并借鉴CT/S对两个知识源合并前的可信度判断。与其他领域自适应的T/S方法相比，更有望获得更好的性能。AT/S作为一种通用的深度学习方法，可广泛应用于任何DNN的领域自适应或模型压缩。
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image37.png)
+    
     &emsp;&emsp;对于无监督域自适应，网络结构图如上图所示。具体通过计算教师和学生AED的输出分布的KL散度来得到损失，计算公式如下
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image38.png)
+    
     &emsp;&emsp;对于序列级T/S学习，则将序列级T/S损失函数最小化
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image39.png)
+    
     &emsp;&emsp;而对于有监督域适应，文章提出了一种利用CT/S和IT/S的自适应师生（AT/S）学习方法，不会为所有解码器步骤分配一对固定的软权重和one-hot权重。其结构图如下所示
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image40.png)
+    
     &emsp;&emsp;在AT/S中，在每个解码步骤中，分别由w和（1-w）加权的教师软后验和one-hot ground-truth的线性组合被用作学生AED的训练目标。AT/S的损失函数公式如下
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image41.png)
+    
     &emsp;&emsp;其中，w的计算公式为
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image42.png)
+    
     &emsp;&emsp;式中的c为置信度分值，d为ground-truth，其计算公式为
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image43.png)
+    
     &emsp;&emsp;其中的f1和f2都是区间[0：1]上的单调递增函数，在文中使用了
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image44.png)
