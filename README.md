@@ -113,8 +113,8 @@
 
 ## 三．相关应用
 1.	DOMAIN ADAPTATION VIA TEACHER-STUDENT LEARNING FOR END-TO-END SPEECH RECOGNITION：文章指出，在混合语音识别系统中，教师学生结构（T/S）对深度神经网络声学模型的域自适应是有效的。通过两个层次的知识转移，文中将T/S学习扩展到基于attention的端到端（E2E）模型的大规模无监督领域适应：教师标志性的后验概率作为软标签，以及一个最佳预测作为解码器指导。为了进一步提高利用ground-truth标签的T/S学习，文中提出了自适应T/S（AT/S）学习。在AT/s中，学生不必有条件地从教师的软标记后验或一个one-hot ground-truth标签中进行选择，而是通过一对分配给软标记的自适应权重和一个量化每个知识源的置信度的one-hot标签从教师和ground-truth中学习。在解码时，根据软标签和one-hot的函数动态估计置信度得分。文中通过3400小时的并行近距离通话和用于域适应的远场Microsoft Cortana数据，与使用相同数量的远场数据训练的强E2E模型相比，T/S和AT/S的相对字错误率分别提高了6.3%和10.3%。
-    对于无监督域自适应，文章通过引入两级知识转移将T/S学习扩展到AED模型：除了从教师的软后验概率外，学生AED还将其解码器条件设置在教师AED解码的one-hot标志性序列上。
-    文章进一步提出了一种自适应T/S（AT/S）学习方法，以改进基于ground-truth标签的T/S学习。AT/S利用IT/S和CT/S的优势，根据每个标签上的置信度得分，自适应地为教师的软后验概率和每个解码步骤的one-hot ground-truth标签分配一对权重。将置信度作为软标签和one-hot标签的函数进行动态估计。学生AED从两个标签的自适应线性组合中学习。AT/S继承了IT/S中软标签和one-hot标签的线性插值，并借鉴CT/S对两个知识源合并前的可信度判断。与其他领域自适应的T/S方法相比，更有望获得更好的性能。AT/S作为一种通用的深度学习方法，可广泛应用于任何DNN的领域自适应或模型压缩。
+    &emsp;&emsp;对于无监督域自适应，文章通过引入两级知识转移将T/S学习扩展到AED模型：除了从教师的软后验概率外，学生AED还将其解码器条件设置在教师AED解码的one-hot标志性序列上。
+    &emsp;&emsp;文章进一步提出了一种自适应T/S（AT/S）学习方法，以改进基于ground-truth标签的T/S学习。AT/S利用IT/S和CT/S的优势，根据每个标签上的置信度得分，自适应地为教师的软后验概率和每个解码步骤的one-hot ground-truth标签分配一对权重。将置信度作为软标签和one-hot标签的函数进行动态估计。学生AED从两个标签的自适应线性组合中学习。AT/S继承了IT/S中软标签和one-hot标签的线性插值，并借鉴CT/S对两个知识源合并前的可信度判断。与其他领域自适应的T/S方法相比，更有望获得更好的性能。AT/S作为一种通用的深度学习方法，可广泛应用于任何DNN的领域自适应或模型压缩。
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image37.png)
     &emsp;&emsp;对于无监督域自适应，网络结构图如上图所示。具体通过计算教师和学生AED的输出分布的KL散度来得到损失，计算公式如下
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image38.png)
