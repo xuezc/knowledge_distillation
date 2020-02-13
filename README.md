@@ -138,4 +138,5 @@
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image43.png)
     
     &emsp;&emsp;其中的f1和f2都是区间[0：1]上的单调递增函数，在文中使用了
+    
     ![paper8](https://github.com/xuezc/knowledge_distillation/blob/master/image44.png)
