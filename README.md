@@ -9,15 +9,15 @@
 
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/images/image2.png)    
 
-    &emsp;&emsp;接着使用计算出来的距离计算软分配向量P_T，如下式所示，其中tau表示温度系数，用以控制分配的软化度
+&emsp;&emsp;接着使用计算出来的距离计算软分配向量P_T，如下式所示，其中tau表示温度系数，用以控制分配的软化度
 
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/images/image3.png)
 
-    &emsp;&emsp;然后，使用分配预测器由学生网络来预测向量P_S，其中分配预测器是由一个基于余弦相似度的卷积层组成的，计算公式如下式，其中，W表示卷积层的参数，
+&emsp;&emsp;然后，使用分配预测器由学生网络来预测向量P_S，其中分配预测器是由一个基于余弦相似度的卷积层组成的，计算公式如下式，其中，W表示卷积层的参数，
 
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/images/image4.png)
 
-    &emsp;&emsp;最后就可以计算向量P_T和P_S的KL散度
+&emsp;&emsp;最后就可以计算向量P_T和P_S的KL散度
 
 ![paper1](https://github.com/xuezc/knowledge_distillation/blob/master/images/image5.png)
     
@@ -28,10 +28,11 @@
 
 ![paper2](https://github.com/xuezc/knowledge_distillation/blob/master/images/image6.png)  
 
-    &emsp;&emsp;但是，这样会损失掉模型集合的多样性。而文章提出的Ensemble Distribution Distillation方法就旨在利用损失掉的多样性，这主要是通过引入先验网络，先验网络通过参数化Dirichlet分布来模拟分类输出分布上的分布
+&emsp;&emsp;但是，这样会损失掉模型集合的多样性。而文章提出的Ensemble Distribution Distillation方法就旨在利用损失掉的多样性，这主要是通过引入先验网络，先验网络通过参数化Dirichlet分布来模拟分类输出分布上的分布
+
 ![paper2](https://github.com/xuezc/knowledge_distillation/blob/master/images/image7.png)  
 
-    &emsp;&emsp;对于给定的转移集合，先验网络通过最小化每个分类分布的负对数似然来训练
+&emsp;&emsp;对于给定的转移集合，先验网络通过最小化每个分类分布的负对数似然来训练
 
 ![paper2](https://github.com/xuezc/knowledge_distillation/blob/master/images/image8.png)  
  
@@ -39,7 +40,7 @@
 
 ![paper2](https://github.com/xuezc/knowledge_distillation/blob/master/images/image9.png)  
 
-    &emsp;&emsp;进而通过考虑预测y与分类参数之间的相互信息，可以得到不确定性的可分离测度
+&emsp;&emsp;进而通过考虑预测y与分类参数之间的相互信息，可以得到不确定性的可分离测度
 
 ![paper2](https://github.com/xuezc/knowledge_distillation/blob/master/images/image10.png)  
 
