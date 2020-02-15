@@ -284,3 +284,23 @@
 ![paper10](https://github.com/xuezc/knowledge_distillation/blob/master/images/image58.png)
 
 其中，L_gt为类概率和标签的交叉熵。
+
+## 六.多教师蒸馏
+
+1. FEED: Feature-level Ensemble for Knowledge Distillation(AAAI20 pre)：知识蒸馏的目的是通过在训练阶段向学生网络提供教师网络的预测，帮助学生网络更好地泛化，从而在师生框架中传递知识。它既可以使用一个高能力的教师，也可以使用多个教师的集合。然而，当人们想要使用基于特征映射的蒸馏方法时，后者并不方便。为了解决这一问题，本文提出了一种通用的、功能强大的知识提取特征集成（FEED）训练算法，其中介绍了一些训练算法，这些算法在特征映射层向学生传递集成知识。在基于特征映射的蒸馏方法中，利用多个非线性变换并行地传递多个教师的知识，帮助学生找到更普遍的解。因此将此方法命名为并行FEED，在CIFAR-100和ImageNet上的实验结果表明，提出的方法在测试时没有引入任何额外的参数或计算，性能有明显的提高。
+
+&emsp;&emsp;假设在特征映射层提取知识和从多个网络集合中提取知识都有各自的优点，我们希望这两种方法能够相互配合。针对这一问题，文章提出了一种训练结构pFEED，用于在特征映射层传递集成知识。N表示教师网络的个数，对每个教师使用不同的非线性变换层，这意味着如果有N个教师，就有N个不同的非线性层。将学生网络的最终特征映射输入到非线性层中，训练其输出以模拟教师网络的最终特征映射。这样，就同时利用了集成模型和基于特征的方法。提出的方法如图2所示，其中NTL是非线性变换层的缩写，每个教师网络分配一个NTL。在训练过程中，所有的教师网络都是固定的，学生网络和NTL网络同时训练。
+
+![paper11](https://github.com/xuezc/knowledge_distillation/blob/master/images/image59.png)
+
+&emsp;&emsp;使用N个不同的教师网络的损失函数如下
+
+![paper11](https://github.com/xuezc/knowledge_distillation/blob/master/images/image60.png)
+
+![paper11](https://github.com/xuezc/knowledge_distillation/blob/master/images/image61.png)
+
+这里，L_CE是交叉熵损失，y是ground-truth标签，s是预测logits，σ（·）表示softmax函数。L_FEED是来自第n个教师网络的损失，x^T_n是来自第n个教师网络的输出特征图，x^S是来自学生网络的输出特征图。NTL_n（·）是第n个非线性转换层，用于使学生网络适应第n个教师网络。每个NTLN（·）由三个核大小为3的卷积层组成，以扩大感受野，使学生能够灵活地融合不同教师网络上的知识。
+
+&emsp;&emsp;BAN法使用交叉熵损失和KD损失，但不软化softmax logits。他们使用一个经过训练的学生网络作为新教师，用来训练一个新学生并递归地这样做。文章利用这种结构上的优势递归地使用同一类型的网络，因为它是一个适合积累和组装知识的模型。通过多次递归地进行知识转移，它还可以集成多个训练序列的知识。文章递归地应用FEED并将这个框架命名为sFEED，其的训练过程如下图所示
+
+![paper11](https://github.com/xuezc/knowledge_distillation/blob/master/images/image62.png)
